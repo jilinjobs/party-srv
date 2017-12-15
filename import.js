@@ -54,7 +54,10 @@ rl.on('line', async line => {
     client = await MongoClient.connect(url, { poolSize: 10 });
 
     const db = client.db(dbName);
-    await db.collection('original').insertOne(data);
+    const entity = await db.collection('original').findOne({ sfzh: data.sfzh });
+    if (!entity) {
+      await db.collection('original').insertOne(data);
+    }
   } catch (err) {
     console.log(err.stack);
   }
