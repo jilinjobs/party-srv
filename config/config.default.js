@@ -19,7 +19,7 @@ module.exports = appInfo => {
       enable: false,
     },
   };
-  
+
   config.cdn = {
     repos_root_path: `${appInfo.baseDir}${sep}upload`,
     repos_root_url: `${root_url}/upload`,
