@@ -4,7 +4,6 @@ const Controller = require('egg').Controller;
 const moment = require('moment');
 const { sep, extname } = require('path');
 const fs = require('fs');
-const uuid = require('node-uuid');
 const awaitWriteStream = require('await-stream-ready').write;
 const sendToWormhole = require('stream-wormhole');
 
