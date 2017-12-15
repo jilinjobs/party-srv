@@ -35,15 +35,8 @@ class FilesController extends Controller {
     // TODO: 检查根路径是否存在，不存在则创建
     ctx.logger.debug('rootPath: ', rootPath);
     if (!fs.existsSync(rootPath)) {
-      const roots = rootPath.split(sep).filter(p => (p != null && p !== ''));
-      // ctx.logger.debug('roots: ', roots)
-      for (let i = 0; i < roots.length; i++) {
-        const p = `${roots.slice(0, i + 1).join(sep)}`;
-        if (!fs.existsSync(p)) {
-          ctx.logger.debug('create dir: ', p);
-          fs.mkdirSync(p);
-        }
-      }
+      ctx.logger.debug('create dir: ', rootPath);
+      fs.mkdirSync(rootPath);
     }
     const filePath = `${rootPath}${sep}`;
     const fileName = `${name}${ext}`;
