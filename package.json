@@ -10,7 +10,6 @@
     "iconv-lite": "^0.4.19",
     "moment": "^2.19.4",
     "mongodb": "^3.0.0-rc0",
-    "node-uuid": "^1.4.8",
     "stream-wormhole": "^1.0.3"
   },
   "devDependencies": {
