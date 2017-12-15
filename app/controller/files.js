@@ -22,7 +22,7 @@ class FilesController extends Controller {
       return;
     }
 
-    const rootPath = `${app.config.cdn.repos_root_path}${sep}y${id}`;
+    const rootPath = `${app.config.cdn.repos_root_path}${sep}${id}`;
     const saved = await this.saveFile(rootPath, stream);
     // const res = { status: 'success', url, fileName: file.originalFilename, uid: saved.uid };
     ctx.success({ id: saved.fileName });
