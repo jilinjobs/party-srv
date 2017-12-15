@@ -34,6 +34,7 @@ const fields = [
   'sfld',
   'wclx',
 ];
+const fields2 = [ ...fields, 'qwdmc', 'qwdlxr', 'qwdlxdh' ];
 
 class PartyService extends Service {
   async queryOriginal({ sfzh }) {
@@ -50,7 +51,7 @@ class PartyService extends Service {
         console.log('add' + add);
         console.log(res._id.toString());
         if (add) {
-          res = fields.reduce(
+          res = fields2.reduce(
             (p, c) => ({
               ...p,
               [c]: add[c],
@@ -67,8 +68,8 @@ class PartyService extends Service {
   }
 
   async saveRegister(type, params) {
-    const { _id } = params;
-    const data = fields.reduce(
+    const { _id, qwdmc, qwdlxr, qwdlxdh } = params;
+    const data = fields2.reduce(
       (p, c) => ({
         ...p,
         [c]: params[c],
