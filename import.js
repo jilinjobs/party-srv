@@ -1,5 +1,3 @@
-import { resolve } from 'url';
-
 'use strict';
 
 const readline = require('readline');
