@@ -36,7 +36,7 @@ const fields = [
 
 async function doWork() {
   const args = process.argv.splice(2);
-  if (args.length == 0) {
+  if (args.length === 0) {
     console.log('请指定要导入的文件名:\n node import.js xxxx.csv');
     return;
   }
@@ -65,6 +65,7 @@ async function doWork() {
   // Use connect method to connect to the Server
   const client = await MongoClient.connect(url, { poolSize: 10 });
   const db = client.db(dbName).collection('original');
+  const create_time = new Date();
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const cols = line.split(',');
@@ -72,7 +73,7 @@ async function doWork() {
       (p, c, i) => ({
         ...p,
         [c]: cols[i],
-      }), {});
+      }), { create_time });
 
     try {
       data.sfzh = data.sfzh.toUpperCase();

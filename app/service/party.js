@@ -67,12 +67,12 @@ class PartyService extends Service {
   }
 
   async saveRegister(type, params) {
-    const { _id } = params;
+    const { _id, image } = params;
     const data = fields2.reduce(
       (p, c) => ({
         ...p,
         [c]: params[c],
-      }), { id: _id, create_time: new Date(), type: type || 0 });
+      }), { id: _id, image, create_time: new Date(), type: type || 0 });
 
     let client;
     let res;

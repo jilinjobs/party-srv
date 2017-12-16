@@ -9,4 +9,7 @@ module.exports = app => {
   router.get('/api/query', controller.home.query);
   router.post('/api/submit', controller.home.submit);
   router.all('/api/upload', controller.files.upload);
+  router.post('/admin/login', controller.admin.login);
+  router.post('/admin/query', controller.admin.query);
+  router.get('/admin/image/:id/:name', controller.admin.image);
 };
