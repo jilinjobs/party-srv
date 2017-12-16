@@ -1,8 +1,6 @@
 'use strict';
 
-const assert = require('assert');
 const Service = require('egg').Service;
-const is = require('is-type-of');
 
 const MongoClient = require('mongodb').MongoClient;
 
@@ -45,6 +43,7 @@ class PartyService extends Service {
       client = await MongoClient.connect(url, { poolSize: 10 });
 
       const db = client.db(dbName);
+      sfzh = sfzh.toUpperCase();
       res = await db.collection('original').findOne({ sfzh });
       if (res) {
         const add = await db.collection('register').findOne({ id: res._id.toString() });
@@ -68,7 +67,7 @@ class PartyService extends Service {
   }
 
   async saveRegister(type, params) {
-    const { _id, qwdmc, qwdlxr, qwdlxdh } = params;
+    const { _id } = params;
     const data = fields2.reduce(
       (p, c) => ({
         ...p,

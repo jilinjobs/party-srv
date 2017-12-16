@@ -69,6 +69,7 @@ async function doWork() {
       }), {});
 
     try {
+      data.sfzh = data.sfzh.toUpperCase();
       const entity = await db.findOne({ sfzh: data.sfzh });
       if (!entity) {
         await db.insertOne(data);
@@ -81,6 +82,7 @@ async function doWork() {
   if (client) {
     client.close();
   }
+  console.log('倒入完成！');
 }
 
 doWork();
