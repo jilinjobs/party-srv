@@ -35,11 +35,17 @@ const fields = [
 ];
 
 async function doWork() {
-  console.log('正在读取数据...');
+  const args = process.argv.splice(2);
+  if (args.length == 0) {
+    console.log('请指定要导入的文件名:\n node import.js xxxx.csv');
+    return;
+  }
+
+  console.log('正在读取${args[0]}数据...');
   const lines = await new Promise((resolve, reject) => {
     const res = [];
     const rl = readline.createInterface({
-      input: fs.createReadStream('data.csv').pipe(iconv.decodeStream('GBK')),
+      input: fs.createReadStream(args[0]).pipe(iconv.decodeStream('GBK')),
       crlfDelay: Infinity,
     });
 
@@ -82,7 +88,7 @@ async function doWork() {
   if (client) {
     client.close();
   }
-  console.log('倒入完成！');
+  console.log('导入完成！');
 }
 
 doWork();
