@@ -148,9 +148,10 @@ class AdminService extends Service {
   }
 
   async exportImg({ page, size }) {
-    const { app } = this;
     let client;
     let rs;
+    let offset = 0;
+    if (page && size) offset = (page - 1) * size;
 
     try {
       // Use connect method to connect to the Server
@@ -159,7 +160,7 @@ class AdminService extends Service {
       const db = client.db(dbName);
       if (page && size) {
         rs = await db.collection('register').find({ }).sort({ create_time: 1 })
-          .skip((page - 1) * size)
+          .skip(offset)
           .limit(size)
           .toArray();
       } else {
@@ -176,7 +177,7 @@ class AdminService extends Service {
       client.close();
     }
 
-    const files = rs.map((p, i) => ({ file: `upload${sep}${p.id}${sep}${p.image}`, name: `${(10001 + i).toString().substr(1)}.jpg` }));
+    const files = rs.map((p, i) => ({ file: `upload${sep}${p.id}${sep}${p.image}`, name: `${(10001 + offset + i).toString().substr(1)}.jpg` }));
     const zip = new jszip();
     files.forEach(p => {
       zip.file(p.name, fs.createReadStream(p.file));
