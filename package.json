@@ -8,6 +8,7 @@
     "egg": "^2.0.0",
     "egg-scripts": "^2.1.0",
     "iconv-lite": "^0.4.19",
+    "jszip": "^3.1.5",
     "moment": "^2.19.4",
     "mongodb": "^3.0.0-rc0",
     "stream-wormhole": "^1.0.3"
