@@ -153,7 +153,7 @@ class AdminService extends Service {
     let offset = 0;
     if (page && size) offset = (page - 1) * size;
 
-    console.log(`${page} ${size} ${offset}`);
+    // console.log(`${page} ${size} ${offset}`);
 
     try {
       // Use connect method to connect to the Server
@@ -169,7 +169,7 @@ class AdminService extends Service {
         rs = await db.collection('register').find({}).sort({ create_time: 1 })
           .toArray();
       }
-      console.log(rs.length);
+      // console.log(rs.length);
 
     } catch (err) {
       console.log(err.stack);
