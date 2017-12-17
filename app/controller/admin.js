@@ -53,7 +53,7 @@ class HomeController extends Controller {
   async exportImg() {
     const { ctx } = this;
     const name = moment().format('YYYYMMDDHHmmss') + '.zip';
-    const res = await this.service.admin.exportImg();
+    const res = await this.service.admin.exportImg(ctx.request.body);
     if (res) {
       ctx.set('content-type', 'text/csv');
       ctx.set('content-disposition', 'attachment;filename=' + name);
