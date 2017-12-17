@@ -153,6 +153,8 @@ class AdminService extends Service {
     let offset = 0;
     if (page && size) offset = (page - 1) * size;
 
+    console.log(`${page} ${size} ${offset}`);
+
     try {
       // Use connect method to connect to the Server
       client = await MongoClient.connect(url, { poolSize: 10 });
@@ -161,13 +163,13 @@ class AdminService extends Service {
       if (page && size) {
         rs = await db.collection('register').find({ }).sort({ create_time: 1 })
           .skip(offset)
-          .limit(size)
+          .limit(Number(size))
           .toArray();
       } else {
         rs = await db.collection('register').find({}).sort({ create_time: 1 })
           .toArray();
       }
-      // console.log(rs);
+      console.log(rs.length);
 
     } catch (err) {
       console.log(err.stack);
