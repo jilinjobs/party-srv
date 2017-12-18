@@ -44,7 +44,7 @@ class PartyService extends Service {
 
       const db = client.db(dbName);
       sfzh = sfzh.toUpperCase();
-      res = await db.collection('original').findOne({ sfzh });
+      res = await db.collection('original').findOne({ sfzh: sfzh.trim() });
       if (res) {
         const add = await db.collection('register').findOne({ id: res._id.toString() });
         console.log('add' + add);
