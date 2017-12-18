@@ -41,7 +41,7 @@ async function doWork() {
     return;
   }
 
-  console.log('正在读取${args[0]}数据...');
+  console.log(`正在读取${args[0]}数据...`);
   const lines = await new Promise((resolve, reject) => {
     const res = [];
     const rl = readline.createInterface({
@@ -66,6 +66,7 @@ async function doWork() {
   const client = await MongoClient.connect(url, { poolSize: 10 });
   const db = client.db(dbName).collection('original');
   const create_time = new Date();
+  let count = 0;
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const cols = line.split(',');
@@ -80,6 +81,7 @@ async function doWork() {
       const entity = await db.findOne({ sfzh: data.sfzh });
       if (!entity) {
         await db.insertOne(data);
+        count++;
       }
     } catch (err) {
       console.log(`处理错误： ${line}`);
@@ -89,7 +91,7 @@ async function doWork() {
   if (client) {
     client.close();
   }
-  console.log('导入完成！');
+  console.log(`导入完成，共导入${count}条数据！`);
 }
 
 doWork();
