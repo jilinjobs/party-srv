@@ -82,6 +82,8 @@ async function doWork() {
       if (!entity) {
         await db.insertOne(data);
         count++;
+      } else {
+        console.log(`skip: ${line}`);
       }
     } catch (err) {
       console.log(`处理错误： ${line}`);
