@@ -6,7 +6,7 @@ const iconv = require('iconv-lite');
 const MongoClient = require('mongodb').MongoClient;
 
 // Connection URL
-const url = 'mongodb://localhost:27017';
+const url = 'mongodb://192.168.1.170:27017';
 
 // Database Name
 const dbName = 'party';
