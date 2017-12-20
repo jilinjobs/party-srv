@@ -87,7 +87,7 @@ class AdminService extends Service {
       client = await MongoClient.connect(url, { poolSize: 10 });
 
       const db = client.db(dbName);
-      total = await db.collection('register').count({ });
+      total = await db.collection('register').count(filter);
       console.log(total);
       res = await db.collection('register').find(filter).sort({ create_time: 1 })
         .skip(offset)
