@@ -70,13 +70,17 @@ class AdminService extends Service {
     return res;
   }
 
-  async query({ page, size }) {
+  async query({ page, size, field, value }) {
     assert(page > 0, '参数page无效');
     assert(size > 0, '参数size无效');
     let client;
     let res;
     let total;
     let offset = 0;
+    const filter = {};
+    if (field && value) {
+      filter[field] = value;
+    }
     if (page && size) offset = (page - 1) * size;
     try {
       // Use connect method to connect to the Server
@@ -85,7 +89,7 @@ class AdminService extends Service {
       const db = client.db(dbName);
       total = await db.collection('register').count({ });
       console.log(total);
-      res = await db.collection('register').find({ }).sort({ create_time: 1 })
+      res = await db.collection('register').find(filter).sort({ create_time: 1 })
         .skip(offset)
         .limit(size)
         .toArray();
@@ -151,11 +155,15 @@ class AdminService extends Service {
 
   }
 
-  async exportImg({ page, size }) {
+  async exportImg({ page, size, field, value }) {
     let client;
     let rs;
     let offset = 0;
     if (page && size) offset = (page - 1) * size;
+    const filter = {};
+    if (field && value) {
+      filter[field] = value;
+    }
 
     // console.log(`${page} ${size} ${offset}`);
 
@@ -165,12 +173,12 @@ class AdminService extends Service {
 
       const db = client.db(dbName);
       if (page && size) {
-        rs = await db.collection('register').find({ }).sort({ create_time: 1 })
+        rs = await db.collection('register').find(filter).sort({ create_time: 1 })
           .skip(offset)
           .limit(Number(size))
           .toArray();
       } else {
-        rs = await db.collection('register').find({}).sort({ create_time: 1 })
+        rs = await db.collection('register').find(filter).sort({ create_time: 1 })
           .toArray();
       }
       // console.log(rs.length);
