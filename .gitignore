@@ -12,4 +12,6 @@ run/
 *.un~
 upload/
 *.tar
+*.csv
+*.zip
 export/
