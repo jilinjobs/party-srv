@@ -50,6 +50,19 @@ class HomeController extends Controller {
   }
 
   // GET
+  async exportXlsx() {
+    const { ctx } = this;
+    const res = await this.service.admin.exportXlsx();
+    if (res) {
+      ctx.set('content-type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      ctx.set('content-disposition', 'attachment;filename=' + res.name);
+      ctx.body = fs.createReadStream(`${res.path}${sep}${res.name}`);
+    } else {
+      this.ctx.fail(500, '导出数据失败');
+    }
+  }
+
+  // GET
   async exportImg() {
     const { ctx } = this;
     const name = moment().format('YYYYMMDDHHmmss') + '.zip';

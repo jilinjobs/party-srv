@@ -13,5 +13,6 @@ module.exports = app => {
   router.post('/admin/query', controller.admin.query);
   router.get('/admin/image/:id/:name', controller.admin.image);
   router.get('/admin/exportCsv', controller.admin.exportCsv);
+  router.get('/admin/exportXlsx', controller.admin.exportXlsx);
   router.get('/admin/exportImg', controller.admin.exportImg);
 };

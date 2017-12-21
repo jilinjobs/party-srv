@@ -9,6 +9,7 @@ const moment = require('moment');
 const jszip = require('jszip');
 const iconv = require('iconv-lite');
 const fs = require('fs');
+const xlsx = require('xlsx');
 
 moment.locale('zh-cn');
 
@@ -106,6 +107,43 @@ class AdminService extends Service {
     return { data: res, total };
   }
 
+  async exportXlsx() {
+    const { app } = this;
+    let client;
+    let rs;
+    const name = moment().format('YYYYMMDDHHmmss') + '.xlsx';
+    const path = `${app.baseDir}${sep}export${sep}`;
+
+    try {
+      // Use connect method to connect to the Server
+      client = await MongoClient.connect(url, { poolSize: 10 });
+
+      const db = client.db(dbName);
+      rs = await db.collection('register').find({}).sort({ create_time: 1 })
+        .toArray();
+      // console.log(rs);
+
+    } catch (err) {
+      console.log(err.stack);
+      return null;
+    }
+    if (client) {
+      client.close();
+    }
+
+    rs = rs.map((r, i) => fields.slice(1).reduce(
+      (p, c) => ({
+        ...p,
+        [c[1]]: r[c[0]],
+      }), { 编号: (10001 + i).toString().substr(1) }));
+
+    const wb = xlsx.utils.book_new();
+    const ws = xlsx.utils.json_to_sheet(rs);
+    xlsx.utils.book_append_sheet(wb, ws);
+    xlsx.writeFile(wb, path + name);
+    return { path, name };
+  }
+
   async exportCsv() {
     const { app } = this;
     let client;
@@ -139,7 +177,7 @@ class AdminService extends Service {
         const row = rs[i];
         row.create_time = moment(row.create_time).format('lll');
         row.bh = (10001 + i).toString().substr(1);
-        const line = fields.map(p => row[p[0]]).join(',');
+        const line = fields.map(p => `"${row[p[0]]}"`).join(',');
         // console.log(line);
         writable.write(iconv.encode(line, 'gbk'));
         writable.write('\n');
