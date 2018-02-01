@@ -44,6 +44,7 @@ const fields = [
   [ 'qwdlxr', '迁往地联系人' ],
   [ 'qwdlxdh', '迁往地联系电话' ],
   [ 'create_time', '登记时间' ],
+  [ 'group', '分组' ],
 ];
 
 class AdminService extends Service {
@@ -236,6 +237,49 @@ class AdminService extends Service {
     });
     return zip.generateNodeStream({ streamFiles: true });
   }
+
+  async saveGroup(params) {
+    const { id, group } = params;
+    assert(id);
+    assert(group);
+
+    let client;
+    let res;
+    try {
+      // Use connect method to connect to the Server
+      client = await MongoClient.connect(url, { poolSize: 10 });
+
+      const db = client.db(dbName);
+      res = await db.collection('register').findOneAndUpdate({ id }, { $set: { group } }, { returnOriginal: false, upsert: true });
+    } catch (err) {
+      console.log(err.stack);
+    }
+    if (client) {
+      client.close();
+    }
+    return res;
+  }
+
+  async groups() {
+    let client;
+    let res;
+    const filter = {};
+    try {
+      // Use connect method to connect to the Server
+      client = await MongoClient.connect(url, { poolSize: 10 });
+
+      const db = client.db(dbName);
+      res = await db.collection('register').distinct('group', filter);
+      console.log(res);
+    } catch (err) {
+      console.log(err.stack);
+    }
+    if (client) {
+      client.close();
+    }
+    return res;
+  }
+
 }
 
 module.exports = AdminService;

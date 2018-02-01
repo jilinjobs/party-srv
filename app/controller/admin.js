@@ -13,7 +13,8 @@ class HomeController extends Controller {
   async login() {
     const res = await this.service.admin.login(this.ctx.request.body);
     if (res === 'ok') {
-      this.ctx.success('登录成功');
+      const groups = await this.service.admin.groups();
+      this.ctx.success('登录成功', { groups });
     } else {
       this.ctx.fail(403, res || '登录失败');
     }
@@ -76,6 +77,15 @@ class HomeController extends Controller {
     }
   }
 
+  // POST
+  async group() {
+    const res = await this.service.admin.saveGroup(this.ctx.request.body);
+    if (res) {
+      this.ctx.success(res);
+    } else {
+      this.ctx.fail(500, '设置分组失败');
+    }
+  }
 }
 
 module.exports = HomeController;

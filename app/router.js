@@ -15,4 +15,5 @@ module.exports = app => {
   router.get('/admin/exportCsv', controller.admin.exportCsv);
   router.get('/admin/exportXlsx', controller.admin.exportXlsx);
   router.get('/admin/exportImg', controller.admin.exportImg);
+  router.post('/admin/group', controller.admin.group);
 };
