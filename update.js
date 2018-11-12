@@ -37,7 +37,7 @@ const fields = [
 async function doWork() {
   const args = process.argv.splice(2);
   if (args.length === 0) {
-    console.log('请指定要导入的文件名:\n node import.js xxxx.csv');
+    console.log('请指定要导入的文件名:\n node update.js xxxx.csv');
     return;
   }
 
@@ -64,7 +64,8 @@ async function doWork() {
   console.log('正在保存数据...');
   // Use connect method to connect to the Server
   const client = await MongoClient.connect(url, { poolSize: 10 });
-  const db = client.db(dbName).collection('original');
+  const db1 = client.db(dbName).collection('original');
+  const db2 = client.db(dbName).collection('register');
   const create_time = new Date();
   let count = 0;
   for (let i = 0; i < lines.length; i++) {
@@ -77,21 +78,18 @@ async function doWork() {
       }), { create_time });
 
     try {
+      console.log(data.xh, '-', data.sfzh);
       data.sfzh = data.sfzh.toUpperCase();
-      const entity = await db.findOne({ sfzh: data.sfzh, xm: data.xm });
-      if (!entity) {
-        await db.insertOne(data);
-        count++;
-      } else {
-        console.log(`skip: ${line}`);
-      }
+      await db1.update({ sfzh: data.sfzh, xm: data.xm }, { $set: { xh: data.xh } });
+      await db2.update({ sfzh: data.sfzh, xm: data.xm }, { $set: { xh: data.xh } });
+      count++;
     } catch (err) {
       console.log(`处理错误： ${line}`);
       console.error(err);
     }
   }
   if (client) {
-    client.close();
+    await client.close();
   }
   console.log(`导入完成，共导入${count}条数据！`);
 }

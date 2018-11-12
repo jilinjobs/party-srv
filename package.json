@@ -28,8 +28,8 @@
     "node": ">=8.9.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon",
-    "stop": "egg-scripts stop",
+    "start": "egg-scripts start --daemon --title=party-srv",
+    "stop": "egg-scripts stop --title=party-srv",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
     "test": "npm run lint -- --fix && npm run test-local",
